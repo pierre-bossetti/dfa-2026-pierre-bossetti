@@ -1,0 +1,428 @@
+openapi: 3.1.0
+info:
+  title: RAD Book API
+  description: The API for book management.
+  version: 1.0.0
+servers:
+  - url: 'https'
+paths:
+  /authors:
+    get:
+      summary: Get a list of authors with filter
+      parameters:
+        - in: query
+          name: name
+          description: Name of the authors to get (filter)
+          required: false
+          schema:
+            type: string
+        - in: query
+          name: birthdate
+          description: Birthdate of the authors to get (filter)
+          required: false
+          schema:
+            type: string
+            format: date
+        - in: query
+          name: country
+          description: Country of the authors to get (filter)
+          required: false
+          schema:
+            type: string
+        - in: query
+          name: sort-by
+          description: The field to sort the list
+          required: false
+          schema:
+            type: string
+            enum: [ name, birthdate, country ]
+        - in: query
+          name: sort-order
+          description: The order to sort the list
+          required: false
+          schema:
+            type: string
+            enum: [ asc, desc ]
+      responses:
+        200:
+          description: The list of authors was returned
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Authors'
+        401:
+          $ref: '#/components/responses/UnauthorizedError'
+
+    post:
+      summary: Create a new author
+      requestBody:
+        description: The author to create
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AuthorNoId'
+      responses:
+        201:
+          description: The author was created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthorWithId'
+        401:
+          $ref: '#/components/responses/UnauthorizedError'
+
+  /authors/{id}:
+    get:
+      summary: Get an author by ID
+      parameters:
+        - in: path
+          name: id
+          description: ID of the author to get
+          required: true
+          schema:
+            type: integer
+      responses:
+        200:
+          description: The author was returned
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthorWithId'
+        404:
+          description: The author was not found
+        401:
+          $ref: '#/components/responses/UnauthorizedError'
+
+    put:
+      summary: Update an author by ID
+      parameters:
+        - in: path
+          name: id
+          description: ID of the author to update
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        description: The author to update
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AuthorNoId'
+      responses:
+        200:
+          description: The author was updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthorWithId'
+        404:
+          description: The author was not found
+        401:
+          $ref: '#/components/responses/UnauthorizedError'
+
+    delete:
+      summary: Delete an author by ID
+      parameters:
+        - in: path
+          name: id
+          description: ID of the author to delete
+          required: true
+          schema:
+            type: integer
+      responses:
+        204:
+          description: The author was deleted
+        404:
+          description: The author was not found
+        400:
+          description: The author is linked to a book and can't be deleted
+        401:
+          $ref: '#/components/responses/UnauthorizedError'
+
+  /books:
+    get:
+      summary: Get a list of books with filter
+      parameters:
+        - in: query
+          name: name
+          description: Name of the books to get (filter)
+          required: false
+          schema:
+            type: string
+        - in: query
+          name: author_id
+          description: Author's ID of the books to get (filter)
+          required: false
+          schema:
+            type: string
+        - in: query
+          name: year
+          description: Year of the books to get (filter)
+          required: false
+          schema:
+            type: integer
+        - in: query
+          name: sort-by
+          description: The field to sort the list
+          required: false
+          schema:
+            type: string
+            enum: [name, author, year]
+        - in: query
+          name: sort-order
+          description: The order to sort the list
+          required: false
+          schema:
+            type: string
+            enum: [asc, desc]
+
+      responses:
+        200:
+          description: The list of books was returned
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Books'
+        401:
+          $ref: '#/components/responses/UnauthorizedError'
+
+    post:
+      summary: Create a new book
+      requestBody:
+        description: The book to create
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BookNoId'
+      responses:
+        201:
+          description: The book was created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BookWithId'
+        400:
+          description: The author does not exist
+        401:
+          $ref: '#/components/responses/UnauthorizedError'
+
+  /books/{id}:
+    get:
+      summary: Get a book by ID
+      parameters:
+        - in: path
+          name: id
+          description: ID of the book to get
+          required: true
+          schema:
+            type: integer
+      responses:
+        200:
+          description: The book was returned
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BookWithId'
+        404:
+          description: The book was not found
+        401:
+          $ref: '#/components/responses/UnauthorizedError'
+
+    put:
+      summary: Update a book by ID
+      parameters:
+        - in: path
+          name: id
+          description: ID of the book to update
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        description: The book to update
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BookNoId'
+      responses:
+        200:
+          description: The book was updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BookWithId'
+        404:
+          description: The book was not found
+        400:
+          description: The author does not exist
+        401:
+          $ref: '#/components/responses/UnauthorizedError'
+
+    delete:
+      summary: Delete a book by ID
+      parameters:
+        - in: path
+          name: id
+          description: ID of the book to delete
+          required: true
+          schema:
+            type: integer
+      responses:
+        204:
+          description: The book was deleted
+        404:
+          description: The book was not found
+        401:
+          $ref: '#/components/responses/UnauthorizedError'
+
+components:
+  schemas:
+    AuthorWithId:
+      type: object
+      required:
+        - id
+        - name
+        - birthdate
+        - country
+        - book_ids
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        birthdate:
+          type: string
+          format: date
+        country:
+          type: string
+        book_ids:
+          type: array
+      example:
+        id: 25
+        name: William Shakespeare
+        birthdate: 1564-04-24
+        country: Angleterre
+        book_ids: [10]
+
+    AuthorNoId:
+      type: object
+      required:
+        - name
+        - birthdate
+        - country
+      properties:
+        name:
+          type: string
+        birthdate:
+          type: string
+          format: date
+        country:
+          type: string
+      example:
+        name: William Shakespeare
+        birthdate: 1564-04-24
+        country: Angleterre
+
+    Authors:
+      type: array
+      items:
+        $ref: '#/components/schemas/AuthorWithId'
+      example:
+        - id: 25
+          name: William Shakespeare
+          birthdate: 1564-04-24
+          country: Angleterre
+          book_ids: [10]
+        - id: 26
+          name: Victor Hugo
+          birthdate: 1802-02-26
+          country: France
+          book_ids: [11]
+
+    BookWithId:
+      type: object
+      required:
+        - id
+        - name
+        - author_id
+        - year
+        - content
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        author_id:
+          type: integer
+        year:
+          type: integer
+        content:
+          type: string
+        summary:
+          type: string
+      example:
+        id: 10
+        name: Roméo et Juliette
+        author_id: 25
+        year: 1597
+        content: Deux puissantes maisons, d’égale dignité, Dans la belle Vérone où se joue notre scène, Font revivre une guerre où une ancienne haine Souille à nouveau de sang les mains de la cité.
+        summary: Résumé
+
+    BookNoId:
+      type: object
+      required:
+        - name
+        - author_id
+        - year
+      properties:
+        name:
+          type: string
+        author_id:
+          type: integer
+        year:
+          type: integer
+        content:
+          type: string
+      example:
+        name: Roméo et Juliette
+        author_id: 25
+        year: 1597
+        content: Deux puissantes maisons, d’égale dignité, Dans la belle Vérone où se joue notre scène, Font revivre une guerre où une ancienne haine Souille à nouveau de sang les mains de la cité.
+
+    Books:
+      type: array
+      items:
+        $ref: '#/components/schemas/BookWithId'
+      example:
+        - id: 10
+          name: Roméo et Juliette
+          author_id: 25
+          year: 1597
+          content: Deux puissantes maisons, d’égale dignité, Dans la belle Vérone où se joue notre scène, Font revivre une guerre où une ancienne haine Souille à nouveau de sang les mains de la cité.
+          summary: Résumé
+        - id: 11
+          name: Les Misérables
+          author_id: 26
+          year: 1862
+          content: En 1815, M. Charles-François-Bienvenu Myriel était évêque de Digne.
+          summary: Résumé
+
+  responses:
+    UnauthorizedError:
+      description: Authentication information is missing or invalid
+      headers:
+        WWW_Authenticate:
+          schema:
+            type: string
+
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+security:
+  - bearerAuth: []
