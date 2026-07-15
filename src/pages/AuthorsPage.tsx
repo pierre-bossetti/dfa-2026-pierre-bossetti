@@ -21,7 +21,7 @@ export default function AuthorsPage() {
             setLoading(true);
             setError(null);
             try {
-                const response = await fetch('api/authors', {
+                const response = await fetch('/api/authors', {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',
@@ -57,7 +57,7 @@ export default function AuthorsPage() {
         if (!confirm("Voulez-vous vraiment supprimer cet auteur ?")) return;
 
         try {
-            const response = await fetch(`api/authors/${id}`, {
+            const response = await fetch(`/api/authors/${id}`, {
                 method: 'DELETE',
                 headers: {
                     'Authorization': `Bearer ${localStorage.getItem('dfa_library_token')}`
@@ -71,7 +71,7 @@ export default function AuthorsPage() {
 
             setAuthors(prevAuthors => prevAuthors.filter(author => author.id !== id));
             alert("Auteur supprimé avec succès !");
-        } catch (error: any) {
+        } catch {
             alert(`Impossible de supprimer : L'auteur est lié à un livre et ne peut pas être supprimé.`);
         }
     }
@@ -87,7 +87,7 @@ export default function AuthorsPage() {
     async function handleSaveAuthor(authorData: CreateAuthorDto) {
         setSaving(true); // On lance l'indicateur de chargement
         const isEditing = editingAuthor !== null;
-        const url = isEditing ? `api/authors/${editingAuthor.id}` : 'api/authors';
+        const url = isEditing ? `/api/authors/${editingAuthor.id}` : '/api/authors';
         const method = isEditing ? 'PUT' : 'POST';
 
         try {

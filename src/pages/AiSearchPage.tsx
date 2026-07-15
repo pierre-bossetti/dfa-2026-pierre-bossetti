@@ -44,9 +44,12 @@ export default function AiSearchPage() {
 
                 setBooks(await booksRes.json());
                 setAuthors(await authorsRes.json());
-            } catch (err: any) {
-                console.error(err);
-                setError(err.message || "Erreur lors de la préparation des données.");
+            } catch (error) {
+                if (error instanceof Error) {
+                    setError(error.message);
+                } else {
+                    setError("Erreur lors de la préparation des données.");
+                }
             } finally {
                 setLoadingLibrary(false);
             }
@@ -139,9 +142,12 @@ export default function AiSearchPage() {
 
             setSuggestedBooks(matches);
 
-        } catch (err: any) {
-            console.error(err);
-            setError(err.message || "Une erreur est survenue lors de l'analyse.");
+        } catch (error) {
+            if (error instanceof Error) {
+                setError(error.message);
+            } else {
+                setError("Une erreur est survenue lors de l'analyse.");
+            }
         } finally {
             setLoadingLlm(false);
         }

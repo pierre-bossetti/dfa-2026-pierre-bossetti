@@ -34,8 +34,12 @@ export default function LoginPage({ onLogin }: LoginPageProps) {
             // On transmet le token au parent (App.tsx) qui va mettre à jour l'état global
             onLogin(data.token);
 
-        } catch (err: any) {
-            setError(err.message || "Une erreur est survenue lors de la connexion.");
+        } catch (error) {
+            if (error instanceof Error) {
+                setError(error.message);
+            } else {
+                setError("Une erreur est survenue lors de la connexion.");
+            }
         } finally {
             setLoading(false);
         }
