@@ -1,13 +1,11 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import './App.css';
 
 // Import des Pages
 import LoginPage from './pages/LoginPage';
 import BooksPage from './pages/BooksPage';
-import AddBookPage from './pages/AddBookPage';
 import AuthorsPage from './pages/AuthorsPage';
-import AddAuthorPage from './pages/AddAuthorPage';
 import AiSearchPage from './pages/AiSearchPage';
 
 // Import des Composants globaux
@@ -42,9 +40,7 @@ export default function App() {
 
                     {/* Routes Sécurisées : Redirige vers /login si le token est manquant */}
                     <Route path="/books" element={token ? <BooksPage /> : <Navigate to="/login" />} />
-                    <Route path="/books/add" element={token ? <AddBookPage /> : <Navigate to="/login" />} />
                     <Route path="/authors" element={token ? <AuthorsPage /> : <Navigate to="/login" />} />
-                    <Route path="/authors/add" element={token ? <AddAuthorPage /> : <Navigate to="/login" />} />
                     <Route path="/ai-search" element={token ? <AiSearchPage /> : <Navigate to="/login" />} />
 
                     {/* Redirection automatique par défaut */}
