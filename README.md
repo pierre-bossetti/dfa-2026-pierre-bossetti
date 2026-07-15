@@ -13,9 +13,17 @@ L'application intègre également une recherche intelligente avec l'IA (Ollama/R
 ---
 
 ### Démarrage du Backend
-Pour démarrer le serveur Backend effectuez les deux commandes ci-dessous.
+Avant de lancer le serveur, vous devez configurer les **variables d'environnement locales**.
+Un fichier de modèle est fourni dans le dossier du backend.
+
+1. Allez dans le dossier du backend :
 ```bash
 cd backend-docker
+cp .env.example .env
+```
+
+2. Démarrez les conteneurs :
+```bash
 docker-compose up
 ```
 ---
