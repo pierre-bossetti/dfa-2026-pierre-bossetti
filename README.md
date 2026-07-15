@@ -111,6 +111,16 @@ Au lieu de multiplier les requêtes HTTP, j'ai implémenté une jointure de donn
 </div>
 ```
 
+### 4. Lisibilité du code et Séparation des responsabilités
+   Au fur et à mesure du développement, les fichiers des pages principales étaient devenus très denses car ils mélangeaient le rendu visuel (UI), la gestion de la mémoire (état local) et les appels réseau (logique API).
+
+**Solution mise en place :**
+J'ai effectué un refactoring pour respecter le principe de Separation of Concerns (Clean Architecture) :
+
+- **Services (/services) :** Extraction de toute la logique d'appel API et de gestion des tokens JWT.
+- **Custom Hooks (/hooks) :** Création de hooks personnalisés (ex: useBooks, useAuthors) agissant comme des chefs d'orchestre pour lier les services à l'état React.
+- **Pages et Composants :** Allégés de toute logique métier, ils sont devenus des composants de présentation purs, dédiés uniquement à l'expérience utilisateur. Le code est désormais modulaire, lisible et facile à maintenir.
+
 ---
 
 ## ✨ Fonctionnalités supplémentaires
@@ -131,4 +141,4 @@ Dans le cadre de ce projet, j'ai utilisé l'assistant IA **Gemini** pour :
 2.  **L'architecture de code :** Aide à la restructuration de la page des auteurs et à l'implémentation de la déstructuration de hooks (ex: utilisation d'un getter sans son setter sur le hook `useSearchParams`).
 3.  **Le débogage TypeScript :** Résolution d'erreurs de dépréciation et de variables déclarées non lues.
 4.  **L'expérience utilisateur :** Conception des mécanismes de feedback réseau (gestion du serveur éteint et désactivation dynamique des boutons).
-5.  **Rédaction du readme :** Mise en page du readme pour la publication sur GitHub.
+5.  **Rédaction :** Mise en page du readme et des commentaires.
