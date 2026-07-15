@@ -1,27 +1,46 @@
 export const aiService = {
     generateRecommendations: async (prompt: string): Promise<{ id: number; reason: string }[]> => {
-        const res = await fetch('ollama/api/generate', {
+
+        // 1. Définition stricte du format attendu (JSON Schema)
+        const jsonSchema = {
+            type: "object",
+            properties: {
+                books: {
+                    type: "array",
+                    items: {
+                        type: "object",
+                        properties: {
+                            id: { type: "integer" },
+                            reason: { type: "string" }
+                        },
+                        required: ["id", "reason"]
+                    }
+                }
+            },
+            required: ["books"]
+        };
+
+        // 2. Appel à l'API avec le paramètre "format"
+        const res = await fetch('ollama/api/chat', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
                 model: 'qwen3:1.7b',
-                prompt: prompt,
-                stream: false
+                messages: [{ role: 'user', content: prompt }],
+                stream: false,
+                format: jsonSchema, // 🔒 On verrouille la structure ici !
+                options: { temperature: 0 } // 🎯 Empêche l'IA de divaguer
             })
         });
 
         if (!res.ok) throw new Error("Le serveur d'intelligence artificielle ne répond pas.");
 
         const data = await res.json();
-        const rawResponse = data.response;
 
-        // PARSING SÉCURISÉ : Isolation du bloc JSON via Expression Régulière
-        const jsonMatch = rawResponse.match(/\[.*?\]/s);
-        if (!jsonMatch) {
-            throw new Error("L'IA n'a pas réussi à formater ses recommandations de manière exploitable.");
-        }
+        // 3. Plus besoin d'expression régulière (Regex) ! On parse directement.
+        const parsedResponse = JSON.parse(data.message.content);
 
-        // Retourne le tableau d'objets parsé
-        return JSON.parse(jsonMatch[0]);
+        // On retourne le tableau contenu dans la propriété "books"
+        return parsedResponse.books;
     }
 };

@@ -61,10 +61,13 @@ export function useAiSearch() {
       1. Cherche dans le catalogue des livres qui correspondent VRAIMENT à la demande.
       2. Si tu trouves des correspondances pertinentes, choisis-en jusqu'à 3 maximum.
       3. CRUCIAL : Si AUCUN livre du catalogue ne correspond de près ou de loin à la demande, tu DOIS renvoyer un tableau vide : []
-      4. Ne fais AUCUNE phrase d'introduction ou de conclusion.
-      5. Renvoie UNIQUEMENT le tableau JSON.
       
-      Exemple de réponse : [{"id": 1, "reason": "Explication..."}]
+      Exemple de réponse attendue : 
+      {
+        "books": [
+          {"id": 1, "reason": "Explication..."}
+        ]
+      }
     `;
 
         try {
