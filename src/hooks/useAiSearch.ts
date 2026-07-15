@@ -61,11 +61,12 @@ export function useAiSearch() {
       1. Cherche dans le catalogue des livres qui correspondent VRAIMENT à la demande.
       2. Si tu trouves des correspondances pertinentes, choisis-en jusqu'à 3 maximum.
       3. CRUCIAL : Si AUCUN livre du catalogue ne correspond de près ou de loin à la demande, tu DOIS renvoyer un tableau vide : []
+      4. RÈGLE DE LONGUEUR : La justification dans le champ "reason" DOIT être très courte (1 à 2 phrases maximum). Sois concis et direct.
       
       Exemple de réponse attendue : 
       {
         "books": [
-          {"id": 1, "reason": "Explication..."}
+          {"id": 1, "reason": "Ce roman classique aborde exactement la Révolution que vous recherchez."}
         ]
       }
     `;
