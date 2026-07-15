@@ -1,48 +1,21 @@
 import { useState } from 'react';
+import { useLogin } from '../hooks/useLogin';
 
 interface LoginPageProps {
     onLogin: (token: string) => void;
 }
 
 export default function LoginPage({ onLogin }: LoginPageProps) {
+    // États liés au formulaire
     const [username, setUsername] = useState('admin');
     const [password, setPassword] = useState('admin');
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState<string | null>(null);
+
+    // Déstructuration de la logique depuis le hook
+    const { login, loading, error } = useLogin(onLogin);
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        setLoading(true);
-        setError(null);
-
-        try {
-            const response = await fetch('/api/auth/login', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'accept': '*/*'
-                },
-                body: JSON.stringify({ username, password })
-            });
-
-            if (!response.ok) {
-                throw new Error("Nom d'utilisateur ou mot de passe incorrect.");
-            }
-
-            const data = await response.json();
-
-            // On transmet le token au parent (App.tsx) qui va mettre à jour l'état global
-            onLogin(data.token);
-
-        } catch (error) {
-            if (error instanceof Error) {
-                setError(error.message);
-            } else {
-                setError("Une erreur est survenue lors de la connexion.");
-            }
-        } finally {
-            setLoading(false);
-        }
+        await login(username, password);
     };
 
     return (
