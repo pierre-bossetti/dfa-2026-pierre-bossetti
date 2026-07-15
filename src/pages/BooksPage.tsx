@@ -64,9 +64,9 @@ export default function BooksPage() {
             {activeForm === 'add' && !error && (
                 <AddBookForm
                     authors={authors}
-                    onAdd={(title, authorId, content) =>
+                    onAdd={(title, authorId, year, content) =>
                         addBook(
-                            { title, authorId, content, year: new Date().getFullYear() },
+                            { title, authorId, year, content },
                             () => setActiveForm('none') // Callback onSuccess
                         )
                     }
