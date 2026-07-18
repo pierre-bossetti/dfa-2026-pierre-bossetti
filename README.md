@@ -16,17 +16,16 @@ L'application intègre également une recherche intelligente avec l'IA (Ollama/R
 Avant de lancer le serveur, vous devez configurer les **variables d'environnement locales**.
 Un fichier de modèle est fourni dans le dossier du backend.
 
-1. Allez dans le dossier du backend :
-```bash
+1. Allez dans le dossier du backend et copiez le fichier d'environnement :
+```cmd
 cd backend-docker
-cp .env.example .env
+copy .env.example .env
 ```
 
 2. Démarrez les conteneurs :
-```bash
+```cmd
 docker-compose up
 ```
----
 
 ### Démarrage du Frontend
 
@@ -34,12 +33,12 @@ Le code du frontend se situe à la racine (root) du projet. Aucun fichier de con
 
 1. Ouvrez un terminal à la racine du projet.
 2. Installez les dépendances du projet :
-```bash
+```cmd
 npm install
 ```
 Lancez le serveur de développement local (Vite) :
 
-```bash
+```cmd
 npm run dev
 ```
 
