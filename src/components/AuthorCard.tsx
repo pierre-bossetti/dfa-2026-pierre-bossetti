@@ -32,12 +32,19 @@ export default function AuthorCard({ author, onDelete, onEdit, onShowBooks }: Au
 
                 {/* Boutons d'actions repoussés vers le bas de la carte */}
                 <div className="mt-auto pt-3 border-top d-flex justify-content-between align-items-center">
-                    <button
-                        className="btn btn-sm btn-outline-primary"
-                        onClick={() => onShowBooks(author.id)}
-                    >
-                        Voir Livres
-                    </button>
+
+                    {/* 1. Logique pour le bouton "Voir Livres" */}
+                    {author.bookIds.length > 0 ? (
+                        <button
+                            className="btn btn-sm btn-outline-primary"
+                            onClick={() => onShowBooks(author.id)}
+                        >
+                            {author.bookIds.length === 1 ? "Voir Livre" : "Voir Livres"}
+                        </button>
+                    ) : (
+                        // Placeholder discret pour garder les autres boutons alignés à droite
+                        <span className="text-muted small fst-italic">Aucun Livre</span>
+                    )}
 
                     <div className="d-flex gap-1">
                         <button
@@ -47,13 +54,17 @@ export default function AuthorCard({ author, onDelete, onEdit, onShowBooks }: Au
                         >
                             ✏️
                         </button>
-                        <button
-                            className="btn btn-sm btn-outline-danger"
-                            onClick={() => onDelete(author.id)}
-                            aria-label="Supprimer"
-                        >
-                            🗑️
-                        </button>
+
+                        {/* 2. Logique pour le bouton "Supprimer" (uniquement si 0 livre) */}
+                        {author.bookIds.length === 0 && (
+                            <button
+                                className="btn btn-sm btn-outline-danger"
+                                onClick={() => onDelete(author.id)}
+                                aria-label="Supprimer"
+                            >
+                                🗑️
+                            </button>
+                        )}
                     </div>
                 </div>
             </div>
